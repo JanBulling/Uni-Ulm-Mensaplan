@@ -2,7 +2,8 @@ import { getMensaMenu } from "@/lib/mensa/mensa-data";
 import { parseMensa } from "@/lib/mensa/parse-mensa";
 import { getPizzaPasta } from "@/lib/pizza-pasta/pizza-pasta-data";
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
+export const revalidate = 60 * 60;
 
 export default async function Home() {
   const htmlMensa = await getMensaMenu();
@@ -24,16 +25,26 @@ export default async function Home() {
           <p className='text-sm text-gray-500'>
             {c.price?.student}€ | {c.price?.employee}€ | {c.price?.guest}€
           </p>
-          <p className='text-sm text-gray-500'>
-            Protein: <span className='font-semibold'>{c.protein}g</span>
-          </p>
-          <p className='text-sm text-gray-500'>Calories: {c.calories}kcal</p>
+          {c.protein && (
+            <p className='text-sm text-gray-500'>
+              Protein: <span className='font-semibold'>{c.protein}g</span>
+            </p>
+          )}
+          {c.calories && (
+            <p className='text-sm text-gray-500'>Calories: {c.calories}kcal</p>
+          )}
         </div>
       ))}
 
       <hr className='my-10' />
 
       <h2 className='text-2xl font-bold mt-10'>PIZZA & PASTA</h2>
+
+      {pizzaPasta.meals.length === 0 && (
+        <div className='font-bold text-xl text-red-500 mt-4'>
+          Heute Geschlossen
+        </div>
+      )}
 
       {pizzaPasta.meals.map((c) => (
         <div className='mt-5' key={c.groupName}>

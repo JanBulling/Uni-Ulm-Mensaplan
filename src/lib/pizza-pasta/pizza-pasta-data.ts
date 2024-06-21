@@ -23,37 +23,38 @@ export async function getPizzaPasta(): Promise<TodayPlan> {
       meals: [],
     };
 
-  const todayData = data.weeks[0].days[dayOfWeek].Bistro.meals;
+  const todayData = data.weeks[0].days[dayOfWeek].Bistro?.meals;
 
-  const meals: Meal[] = todayData.map((m: any) => {
-    const mealNameSplit = (m.meal as string).split(" ");
-    const mealName = mealNameSplit.slice(0, 2).join(" ");
-    const mealDescription = mealNameSplit
-      .slice(2)
-      .join(" ")
-      .replaceAll("*", "");
+  const meals: Meal[] =
+    todayData?.map((m: any) => {
+      const mealNameSplit = (m.meal as string).split(" ");
+      const mealName = mealNameSplit.slice(0, 2).join(" ");
+      const mealDescription = mealNameSplit
+        .slice(2)
+        .join(" ")
+        .replaceAll("*", "");
 
-    const price: string = m.price;
-    const prices = price
-      .replaceAll("€", "")
-      .replaceAll(/[A-Za-z.]/g, "")
-      .replaceAll(",", ".")
-      .trim()
-      .split("  ");
+      const price: string = m.price;
+      const prices = price
+        .replaceAll("€", "")
+        .replaceAll(/[A-Za-z.]/g, "")
+        .replaceAll(",", ".")
+        .trim()
+        .split("  ");
 
-    const hasStudentPrice = prices.length == 3;
+      const hasStudentPrice = prices.length == 3;
 
-    return {
-      groupName: (m.category as string).toUpperCase(),
-      name: mealName,
-      description: mealDescription,
-      price: {
-        student: hasStudentPrice ? prices[0] : "4.50",
-        employee: prices[hasStudentPrice ? 1 : 0],
-        guest: prices[hasStudentPrice ? 2 : 1],
-      },
-    } as Meal;
-  });
+      return {
+        groupName: (m.category as string).toUpperCase(),
+        name: mealName,
+        description: mealDescription,
+        price: {
+          student: hasStudentPrice ? prices[0] : "4.50",
+          employee: prices[hasStudentPrice ? 1 : 0],
+          guest: prices[hasStudentPrice ? 2 : 1],
+        },
+      } as Meal;
+    }) ?? [];
 
   return {
     date: formattedDate,

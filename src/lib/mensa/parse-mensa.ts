@@ -12,13 +12,18 @@ export function parseMensa(htmlContent: string): TodayPlan {
 
   // console.log(numberMeals, mealBodies.length);
 
-  for (let i = 0; i < Math.min(numberMeals, 4); i++) {
+  for (let i = 0; i < Math.min(numberMeals, 6); i++) {
     const mealGropName = extractTextByClassName(mealHead[i], "gruppenname")[0];
 
-    const mealName = extractTextByQuerySelector(
+    const mealNameHtml = extractTextByQuerySelector(
       mealBodies[i],
       "div.fltl[style='width:92%']"
-    )[0];
+    );
+
+    const mealName = mealNameHtml
+      .filter((m) => !m.includes("\t") && !m.startsWith("("))
+      .join("")
+      .replace(" ,", ",");
 
     const pricesElement = extractTextByQuerySelector(
       mealBodies[i],
@@ -33,8 +38,8 @@ export function parseMensa(htmlContent: string): TodayPlan {
       "div.azn > table > tbody > tr"
     );
 
-    const calories = nutritions[1].replace(",", ".").replace("kcal", "");
-    const proteins = nutritions[4].replace(",", ".").replace("g", "");
+    const calories = nutritions[1]?.replace(",0", "").replace("kcal", "");
+    const proteins = nutritions[4]?.replace(",", ".").replace("g", "");
 
     meals.push({
       groupName: mealGropName ?? "UNDEFINED",
@@ -44,8 +49,8 @@ export function parseMensa(htmlContent: string): TodayPlan {
         employee: prices[1].trim(),
         guest: prices[2].trim(),
       },
-      calories: calories.trim(),
-      protein: proteins.trim(),
+      calories: calories?.trim() ?? undefined,
+      protein: proteins?.trim() ?? undefined,
     });
   }
 

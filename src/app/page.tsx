@@ -9,7 +9,7 @@ export default async function Home() {
   const htmlMensa = await getMensaMenu();
   const content = parseMensa(htmlMensa);
 
-  const pizzaPasta = await getPizzaPasta();
+  // const pizzaPasta = await getPizzaPasta();
 
   return (
     <main className='max-w-2xl md:mx-auto my-10 mx-5'>
@@ -36,11 +36,11 @@ export default async function Home() {
         </div>
       ))}
 
-      <hr className='my-10' />
+      {/* <hr className='my-10' /> */}
 
-      <h2 className='text-2xl font-bold mt-10'>PIZZA & PASTA</h2>
+      {/* <h2 className='text-2xl font-bold mt-10'>PIZZA & PASTA</h2> */}
 
-      {pizzaPasta.meals.length === 0 && (
+      {/* {pizzaPasta.meals.length === 0 && (
         <div className='font-bold text-xl text-red-500 mt-4'>
           Heute Geschlossen
         </div>
@@ -54,7 +54,7 @@ export default async function Home() {
             {c.price?.student}€ | {c.price?.employee}€ | {c.price?.guest}€
           </p>
         </div>
-      ))}
+      ))} */}
     </main>
   );
 }

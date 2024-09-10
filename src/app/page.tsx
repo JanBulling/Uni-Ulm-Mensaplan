@@ -1,9 +1,9 @@
 import { getMensaMenu } from "@/lib/mensa/mensa-data";
 import { parseMensa } from "@/lib/mensa/parse-mensa";
-import { getPizzaPasta } from "@/lib/pizza-pasta/pizza-pasta-data";
+// import { getPizzaPasta } from "@/lib/pizza-pasta/pizza-pasta-data";
 
-// export const dynamic = "force-dynamic";
-export const revalidate = 60 * 60;
+export const dynamic = "force-dynamic";
+// export const revalidate = 60 * 60;
 
 export default async function Home() {
   const htmlMensa = await getMensaMenu();

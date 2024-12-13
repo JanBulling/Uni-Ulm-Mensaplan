@@ -30,7 +30,7 @@ export default function MensaCard({ meal }: { meal: MensaMeal }) {
       </p>
       {meal.protein && (
         <p className='text-xs text-gray-500'>
-          Protein: <span className='font-semibold'>{meal.protein}g</span>
+          Protein: <span className='font-semibold'>{meal.protein}</span>
         </p>
       )}
       {meal.calories && (

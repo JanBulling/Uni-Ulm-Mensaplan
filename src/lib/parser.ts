@@ -35,7 +35,7 @@ export function parseMensaHTML(htmlString: string): MealPlan {
       );
       const name = nameElementsHtml
         .filter((m) => !m.includes("\t") && !m.startsWith("("))
-        .join("")
+        .join(" ")
         .replace(" ,", ",");
 
       const proteinRow = Array.from(element.querySelectorAll("tr")).find(

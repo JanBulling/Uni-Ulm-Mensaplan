@@ -20,7 +20,7 @@ export default async function Home() {
 
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
           {mealPlan.mensaMeals.map((c) => (
-            <MensaCard meal={c} />
+            <MensaCard meal={c} key={c.name} />
           ))}
         </div>
 
@@ -32,7 +32,7 @@ export default async function Home() {
             </div>
             <div className='flex flex-col gap-4 mt-4'>
               {mealPlan.pizzaMeals.map((c) => (
-                <PizzaCard meal={c} />
+                <PizzaCard meal={c} key={c.name} />
               ))}
               {mealPlan.pizzaMeals.length === 0 && (
                 <p className='font-semibold'>Heute geschlossen</p>
@@ -47,7 +47,7 @@ export default async function Home() {
             </div>
             <div className='flex flex-col gap-4 mt-4'>
               {mealPlan.snackMeal.map((c) => (
-                <PizzaCard meal={c} />
+                <PizzaCard meal={c} key={c.name} />
               ))}
               {mealPlan.snackMeal.length === 0 && (
                 <p className='font-semibold'>Heute geschlossen</p>
@@ -62,7 +62,7 @@ export default async function Home() {
         </div>
         <div className='flex flex-col gap-4 mt-4'>
           {mealPlan.desserts.map((c) => (
-            <PizzaCard meal={c} />
+            <PizzaCard meal={c} key={c.name} />
           ))}
           {mealPlan.desserts.length === 0 && (
             <p className='font-semibold'>Heute nicht vorhanden</p>
@@ -75,7 +75,7 @@ export default async function Home() {
         </div>
         <div className='flex flex-col gap-4 mt-4'>
           {mealPlan.salad.map((c) => (
-            <PizzaCard meal={c} />
+            <PizzaCard meal={c} key={c.name} />
           ))}
           {mealPlan.salad.length === 0 && (
             <p className='font-semibold'>Heute nicht vorhanden</p>
@@ -90,7 +90,7 @@ export default async function Home() {
             </div>
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4'>
               {mealPlan.others.map((c) => (
-                <PizzaCard meal={c} />
+                <PizzaCard meal={c} key={c.name} />
               ))}
             </div>
           </>

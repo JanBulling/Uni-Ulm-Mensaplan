@@ -1,60 +1,101 @@
-import { getMensaMenu } from "@/lib/mensa/mensa-data";
-import { parseMensa } from "@/lib/mensa/parse-mensa";
-// import { getPizzaPasta } from "@/lib/pizza-pasta/pizza-pasta-data";
+import { Icon } from "@/components/icon";
+import MensaCard from "@/components/mensa-card";
+import PizzaCard from "@/components/pizza-card";
+import { getMensaMenu } from "@/lib/mensa-data";
+import { parseMensaHTML } from "@/lib/parser";
 
 export const dynamic = "force-dynamic";
-// export const revalidate = 60 * 60;
 
 export default async function Home() {
   const htmlMensa = await getMensaMenu();
-  const content = parseMensa(htmlMensa);
-
-  // const pizzaPasta = await getPizzaPasta();
+  const mealPlan = parseMensaHTML(htmlMensa);
 
   return (
-    <main className='max-w-2xl md:mx-auto my-10 mx-5'>
-      <h1 className='font-bold text-xl text-orange-500'>{content.date}</h1>
-      {content.meals.length === 0 && <p>Gechlossen</p>}
+    <>
+      {/* <Header date={mealPlan.date} /> */}
+      <main className='max-w-4xl md:mx-auto my-10 mx-5'>
+        <h1 className='mx-auto font-semibold text-xl my-6'>{mealPlan.date}</h1>
 
-      <h2 className='text-2xl font-bold mt-10'>MENSA</h2>
+        {mealPlan.mensaMeals.length === 0 && <p>Gechlossen</p>}
 
-      {content.meals.map((c) => (
-        <div className='mt-5' key={c.groupName}>
-          <h3 className='text-xl font-bold'>{c.groupName}</h3>
-          <h4 className='font-semibold'>{c.name}</h4>
-          <p className='text-sm text-gray-500'>
-            {c.price?.student}€ | {c.price?.employee}€ | {c.price?.guest}€
-          </p>
-          {c.protein && (
-            <p className='text-sm text-gray-500'>
-              Protein: <span className='font-semibold'>{c.protein}g</span>
-            </p>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+          {mealPlan.mensaMeals.map((c) => (
+            <MensaCard meal={c} />
+          ))}
+        </div>
+
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+          <div>
+            <div className='mt-12 text-amber-800 flex items-center gap-2'>
+              <h2 className='text-2xl font-semibold'>Pizza</h2>
+              <Icon icon='Pizza' />
+            </div>
+            <div className='flex flex-col gap-4 mt-4'>
+              {mealPlan.pizzaMeals.map((c) => (
+                <PizzaCard meal={c} />
+              ))}
+              {mealPlan.pizzaMeals.length === 0 && (
+                <p className='font-semibold'>Heute geschlossen</p>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <div className='mt-12 text-amber-800 flex items-center gap-2'>
+              <h2 className='text-2xl font-semibold'>Snacks</h2>
+              <Icon icon='ChefHat' />
+            </div>
+            <div className='flex flex-col gap-4 mt-4'>
+              {mealPlan.snackMeal.map((c) => (
+                <PizzaCard meal={c} />
+              ))}
+              {mealPlan.snackMeal.length === 0 && (
+                <p className='font-semibold'>Heute geschlossen</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className='mt-12 text-fuchsia-600 flex items-center gap-2'>
+          <h2 className='text-2xl font-semibold'>Deserts</h2>
+          <Icon icon='IceCreamBowl' />
+        </div>
+        <div className='flex flex-col gap-4 mt-4'>
+          {mealPlan.desserts.map((c) => (
+            <PizzaCard meal={c} />
+          ))}
+          {mealPlan.desserts.length === 0 && (
+            <p className='font-semibold'>Heute nicht vorhanden</p>
           )}
-          {c.calories && (
-            <p className='text-sm text-gray-500'>Calories: {c.calories}kcal</p>
+        </div>
+
+        <div className='mt-12 text-lime-600 flex items-center gap-2'>
+          <h2 className='text-2xl font-semibold'>Salate</h2>
+          <Icon icon='Salad' />
+        </div>
+        <div className='flex flex-col gap-4 mt-4'>
+          {mealPlan.salad.map((c) => (
+            <PizzaCard meal={c} />
+          ))}
+          {mealPlan.salad.length === 0 && (
+            <p className='font-semibold'>Heute nicht vorhanden</p>
           )}
         </div>
-      ))}
 
-      {/* <hr className='my-10' /> */}
-
-      {/* <h2 className='text-2xl font-bold mt-10'>PIZZA & PASTA</h2> */}
-
-      {/* {pizzaPasta.meals.length === 0 && (
-        <div className='font-bold text-xl text-red-500 mt-4'>
-          Heute Geschlossen
-        </div>
-      )}
-
-      {pizzaPasta.meals.map((c) => (
-        <div className='mt-5' key={c.groupName}>
-          <h3 className='text-xl font-bold'>{c.name}</h3>
-          <h4 className='font-semibold'>{c.description}</h4>
-          <p className='text-sm text-gray-500'>
-            {c.price?.student}€ | {c.price?.employee}€ | {c.price?.guest}€
-          </p>
-        </div>
-      ))} */}
-    </main>
+        {mealPlan.others.length !== 0 && (
+          <>
+            <div className='mt-12 text-neutral-500 flex items-center gap-2'>
+              <h2 className='text-2xl font-semibold'>Sonstiges</h2>
+              <Icon icon='Salad' />
+            </div>
+            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4'>
+              {mealPlan.others.map((c) => (
+                <PizzaCard meal={c} />
+              ))}
+            </div>
+          </>
+        )}
+      </main>
+    </>
   );
 }

@@ -28,7 +28,15 @@ export function parseMensaHTML(htmlString: string): MealPlan {
       groups.push(currentGroup);
     } else if (element.classList.contains("splMeal") && currentGroup) {
       const nameElement = element.querySelector(".fltl:nth-child(2)");
-      const name = nameElement?.childNodes[0].textContent?.trim() || "?";
+
+      const nameElementsHtml: string[] = [];
+      nameElement?.childNodes.forEach((node) =>
+        nameElementsHtml.push(node.textContent?.trim() ?? "")
+      );
+      const name = nameElementsHtml
+        .filter((m) => !m.includes("\t") && !m.startsWith("("))
+        .join("")
+        .replace(" ,", ",");
 
       const proteinRow = Array.from(element.querySelectorAll("tr")).find(
         (row) => row.textContent?.includes("Protein")
